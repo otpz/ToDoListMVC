@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using ToDoListMVC.Entity.ViewModels.TaskJobs;
+using ToDoListMVC.Service.Services.Abstractions;
 using ToDoListMVC.Web.Models;
 
 namespace ToDoListMVC.Web.Controllers
@@ -7,15 +10,21 @@ namespace ToDoListMVC.Web.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ITaskJobService taskJobService;
+        private readonly IMapper mapper;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ITaskJobService taskJobService, IMapper mapper)
         {
             _logger = logger;
+            this.taskJobService = taskJobService;
+            this.mapper = mapper;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var taskJobs = await taskJobService.GetAllTaskJobAsync();
+            var taskJobsMap = mapper.Map<List<TaskJobViewModel>>(taskJobs);
+            return View(taskJobsMap);
         }
 
         public IActionResult Privacy()

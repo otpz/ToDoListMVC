@@ -3,12 +3,13 @@ using Microsoft.EntityFrameworkCore;
 using ToDoListMVC.Data.Context;
 using ToDoListMVC.Data.Extensions;
 using ToDoListMVC.Entity.Entities;
+using ToDoListMVC.Service.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.LoadDataLayerExtension(builder.Configuration);
-
+builder.Services.LoadServiceLayerExtension();
 builder.Services.AddSession();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
