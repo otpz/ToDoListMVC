@@ -45,7 +45,7 @@ namespace ToDoListMVC.Data.Configurations
 
             var user = new AppUser
             {
-                Id = "1",
+                Id = 1,
                 FirstName = "User",
                 LastName = "Test",
                 Email = "test@gmail.com",
@@ -59,7 +59,7 @@ namespace ToDoListMVC.Data.Configurations
 
             var user2 = new AppUser
             {
-                Id = "2",
+                Id = 2,
                 FirstName = "User2",
                 LastName = "Test",
                 Email = "test2@gmail.com",

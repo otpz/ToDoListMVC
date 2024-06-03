@@ -8,22 +8,17 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ToDoListMVC.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class AppUserMigration : Migration
+    public partial class DatabaseUpdate1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "AppUserId",
-                table: "TaskJobs",
-                type: "nvarchar(450)",
-                nullable: true);
-
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -37,7 +32,8 @@ namespace ToDoListMVC.Data.Migrations
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Biography = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -70,7 +66,7 @@ namespace ToDoListMVC.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    RoleId = table.Column<int>(type: "int", nullable: false),
                     ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -91,7 +87,7 @@ namespace ToDoListMVC.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
                     ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -113,7 +109,7 @@ namespace ToDoListMVC.Data.Migrations
                     LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    UserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -130,8 +126,8 @@ namespace ToDoListMVC.Data.Migrations
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    RoleId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -154,7 +150,7 @@ namespace ToDoListMVC.Data.Migrations
                 name: "AspNetUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
                     LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -170,40 +166,49 @@ namespace ToDoListMVC.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "TaskJobs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Priority = table.Column<int>(type: "int", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    AppUserId = table.Column<int>(type: "int", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TaskJobs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TaskJobs_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "Biography", "ConcurrencyStamp", "CreatedDate", "DeletedDate", "Email", "EmailConfirmed", "FirstName", "IsDelete", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "1", 0, null, "7006e4f8-d977-4df6-9788-06450115ec6b", new DateTime(2024, 6, 2, 14, 0, 39, 479, DateTimeKind.Local).AddTicks(6448), null, "test@gmail.com", false, "User", false, "Test", false, null, "TEST@GMAIL.COM", "TEST@GMAIL.COM", "AQAAAAIAAYagAAAAENrs+ltDvGq4tb6aZyZY53XtuIkKG9Qf5xxggNRtNBjrDP3G1dwTsGyLxjRGd8W55g==", "1234567890", false, "12345678901", false, "test@gmail.com" },
-                    { "2", 0, null, "4c26466f-4da4-4a87-a52a-b5a1a3368e97", new DateTime(2024, 6, 2, 14, 0, 39, 552, DateTimeKind.Local).AddTicks(3254), null, "test2@gmail.com", false, "User2", false, "Test", false, null, "TEST2@GMAIL.COM", "TEST2@GMAIL.COM", "AQAAAAIAAYagAAAAEAYuMS1XU5EojV2QvJTgEv1NiriTCmHfMlmZWyFfVaoWby/XE3GHkzZrhflHhRSsoA==", "1234567890", false, "12345678902", false, "test2@gmail.com" }
+                    { 1, 0, null, "0e8b47ef-fbf5-4cde-9432-19c21b36b1a3", new DateTime(2024, 6, 3, 10, 44, 7, 631, DateTimeKind.Local).AddTicks(7835), null, "test@gmail.com", false, "User", false, "Test", false, null, "TEST@GMAIL.COM", "TEST@GMAIL.COM", "AQAAAAIAAYagAAAAELDNL/j26rcFbDxdOq6NKCSszbW1raEgB28Qbc+h/xX8KrZWu+DyM6XZVAjq46O+Fw==", "1234567890", false, "12345678901", false, "test@gmail.com" },
+                    { 2, 0, null, "7a92d47a-fcb6-4f6b-a169-b68e56d8c89f", new DateTime(2024, 6, 3, 10, 44, 7, 704, DateTimeKind.Local).AddTicks(9603), null, "test2@gmail.com", false, "User2", false, "Test", false, null, "TEST2@GMAIL.COM", "TEST2@GMAIL.COM", "AQAAAAIAAYagAAAAEKyRfZqug3gLNnrI1w8VeW6snz7VeAllWBNoAtAtOMIQUdGlu57zw6lZ1sXV/NhhXw==", "1234567890", false, "12345678902", false, "test2@gmail.com" }
                 });
 
-            migrationBuilder.UpdateData(
+            migrationBuilder.InsertData(
                 table: "TaskJobs",
-                keyColumn: "Id",
-                keyValue: 1,
-                columns: new[] { "AppUserId", "CreatedDate" },
-                values: new object[] { null, new DateTime(2024, 6, 2, 14, 0, 39, 479, DateTimeKind.Local).AddTicks(3748) });
-
-            migrationBuilder.UpdateData(
-                table: "TaskJobs",
-                keyColumn: "Id",
-                keyValue: 2,
-                columns: new[] { "AppUserId", "CreatedDate" },
-                values: new object[] { null, new DateTime(2024, 6, 2, 14, 0, 39, 479, DateTimeKind.Local).AddTicks(3751) });
-
-            migrationBuilder.UpdateData(
-                table: "TaskJobs",
-                keyColumn: "Id",
-                keyValue: 3,
-                columns: new[] { "AppUserId", "CreatedDate" },
-                values: new object[] { null, new DateTime(2024, 6, 2, 14, 0, 39, 479, DateTimeKind.Local).AddTicks(3753) });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TaskJobs_AppUserId",
-                table: "TaskJobs",
-                column: "AppUserId");
+                columns: new[] { "Id", "AppUserId", "CreatedDate", "DeletedDate", "Description", "IsActive", "IsDeleted", "Priority", "Title" },
+                values: new object[,]
+                {
+                    { 1, null, new DateTime(2024, 6, 3, 10, 44, 7, 631, DateTimeKind.Local).AddTicks(5440), null, "Elektrik Makinaları 2 ödevi var.", true, false, 1, "Ödevi Yap" },
+                    { 2, null, new DateTime(2024, 6, 3, 10, 44, 7, 631, DateTimeKind.Local).AddTicks(5443), null, "Son haftanın staj defterinde eksikler var.", true, false, 2, "Staj defterini tamamla" },
+                    { 3, null, new DateTime(2024, 6, 3, 10, 44, 7, 631, DateTimeKind.Local).AddTicks(5445), null, "OBS'den bir mesaj gelebilir.", true, false, 3, "OBS'yi kontrol et" }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -244,21 +249,15 @@ namespace ToDoListMVC.Data.Migrations
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_TaskJobs_AspNetUsers_AppUserId",
+            migrationBuilder.CreateIndex(
+                name: "IX_TaskJobs_AppUserId",
                 table: "TaskJobs",
-                column: "AppUserId",
-                principalTable: "AspNetUsers",
-                principalColumn: "Id");
+                column: "AppUserId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_TaskJobs_AspNetUsers_AppUserId",
-                table: "TaskJobs");
-
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -275,39 +274,13 @@ namespace ToDoListMVC.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "TaskJobs");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
-
-            migrationBuilder.DropIndex(
-                name: "IX_TaskJobs_AppUserId",
-                table: "TaskJobs");
-
-            migrationBuilder.DropColumn(
-                name: "AppUserId",
-                table: "TaskJobs");
-
-            migrationBuilder.UpdateData(
-                table: "TaskJobs",
-                keyColumn: "Id",
-                keyValue: 1,
-                column: "CreatedDate",
-                value: new DateTime(2024, 6, 2, 12, 50, 55, 84, DateTimeKind.Local).AddTicks(9479));
-
-            migrationBuilder.UpdateData(
-                table: "TaskJobs",
-                keyColumn: "Id",
-                keyValue: 2,
-                column: "CreatedDate",
-                value: new DateTime(2024, 6, 2, 12, 50, 55, 84, DateTimeKind.Local).AddTicks(9482));
-
-            migrationBuilder.UpdateData(
-                table: "TaskJobs",
-                keyColumn: "Id",
-                keyValue: 3,
-                column: "CreatedDate",
-                value: new DateTime(2024, 6, 2, 12, 50, 55, 84, DateTimeKind.Local).AddTicks(9484));
         }
     }
 }

@@ -3,7 +3,7 @@ using ToDoListMVC.Core.EntityBase;
 
 namespace ToDoListMVC.Entity.Entities
 {
-    public class AppUser : IdentityUser<string>, IEntityBase
+    public class AppUser : IdentityUser<int>, IEntityBase
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }

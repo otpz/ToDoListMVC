@@ -12,8 +12,8 @@ using ToDoListMVC.Data.Context;
 namespace ToDoListMVC.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240602112458_Update1")]
-    partial class Update1
+    [Migration("20240603074407_DatabaseUpdate1")]
+    partial class DatabaseUpdate1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,10 +25,13 @@ namespace ToDoListMVC.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<int>", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -52,7 +55,7 @@ namespace ToDoListMVC.Data.Migrations
                     b.ToTable("AspNetRoles", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -66,9 +69,8 @@ namespace ToDoListMVC.Data.Migrations
                     b.Property<string>("ClaimValue")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("RoleId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -77,7 +79,7 @@ namespace ToDoListMVC.Data.Migrations
                     b.ToTable("AspNetRoleClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -91,9 +93,8 @@ namespace ToDoListMVC.Data.Migrations
                     b.Property<string>("ClaimValue")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -102,7 +103,7 @@ namespace ToDoListMVC.Data.Migrations
                     b.ToTable("AspNetUserClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
                 {
                     b.Property<string>("LoginProvider")
                         .HasColumnType("nvarchar(450)");
@@ -113,9 +114,8 @@ namespace ToDoListMVC.Data.Migrations
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -124,13 +124,13 @@ namespace ToDoListMVC.Data.Migrations
                     b.ToTable("AspNetUserLogins", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
                 {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("RoleId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -139,10 +139,10 @@ namespace ToDoListMVC.Data.Migrations
                     b.ToTable("AspNetUserRoles", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
                 {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.Property<string>("LoginProvider")
                         .HasColumnType("nvarchar(450)");
@@ -160,8 +160,11 @@ namespace ToDoListMVC.Data.Migrations
 
             modelBuilder.Entity("ToDoListMVC.Entity.Entities.AppUser", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
@@ -245,10 +248,10 @@ namespace ToDoListMVC.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "1",
+                            Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "5a8a6859-93de-4273-b215-f2cd4bf18b09",
-                            CreatedDate = new DateTime(2024, 6, 2, 14, 24, 58, 115, DateTimeKind.Local).AddTicks(6405),
+                            ConcurrencyStamp = "0e8b47ef-fbf5-4cde-9432-19c21b36b1a3",
+                            CreatedDate = new DateTime(2024, 6, 3, 10, 44, 7, 631, DateTimeKind.Local).AddTicks(7835),
                             Email = "test@gmail.com",
                             EmailConfirmed = false,
                             FirstName = "User",
@@ -257,7 +260,7 @@ namespace ToDoListMVC.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "TEST@GMAIL.COM",
                             NormalizedUserName = "TEST@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEBrVwkdUifV11KJdgIYB6rRfAeRfdXAuy93ZbHPasi7Qljq+9xL0FLl/mqaB2kcBvA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAELDNL/j26rcFbDxdOq6NKCSszbW1raEgB28Qbc+h/xX8KrZWu+DyM6XZVAjq46O+Fw==",
                             PhoneNumber = "1234567890",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "12345678901",
@@ -266,10 +269,10 @@ namespace ToDoListMVC.Data.Migrations
                         },
                         new
                         {
-                            Id = "2",
+                            Id = 2,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e0175aae-9e6a-4021-8851-2315a8abc1cc",
-                            CreatedDate = new DateTime(2024, 6, 2, 14, 24, 58, 187, DateTimeKind.Local).AddTicks(3734),
+                            ConcurrencyStamp = "7a92d47a-fcb6-4f6b-a169-b68e56d8c89f",
+                            CreatedDate = new DateTime(2024, 6, 3, 10, 44, 7, 704, DateTimeKind.Local).AddTicks(9603),
                             Email = "test2@gmail.com",
                             EmailConfirmed = false,
                             FirstName = "User2",
@@ -278,7 +281,7 @@ namespace ToDoListMVC.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "TEST2@GMAIL.COM",
                             NormalizedUserName = "TEST2@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEE4SmkL4aMqIcxRq56uWyE52OOtrEswjiQ/A8TcqcGs99z9WNN7fcHEI1XWlvNqBaA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEKyRfZqug3gLNnrI1w8VeW6snz7VeAllWBNoAtAtOMIQUdGlu57zw6lZ1sXV/NhhXw==",
                             PhoneNumber = "1234567890",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "12345678902",
@@ -295,8 +298,8 @@ namespace ToDoListMVC.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("AppUserId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int?>("AppUserId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -333,7 +336,7 @@ namespace ToDoListMVC.Data.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(2024, 6, 2, 14, 24, 58, 115, DateTimeKind.Local).AddTicks(4131),
+                            CreatedDate = new DateTime(2024, 6, 3, 10, 44, 7, 631, DateTimeKind.Local).AddTicks(5440),
                             Description = "Elektrik Makinaları 2 ödevi var.",
                             IsActive = true,
                             IsDeleted = false,
@@ -343,7 +346,7 @@ namespace ToDoListMVC.Data.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedDate = new DateTime(2024, 6, 2, 14, 24, 58, 115, DateTimeKind.Local).AddTicks(4134),
+                            CreatedDate = new DateTime(2024, 6, 3, 10, 44, 7, 631, DateTimeKind.Local).AddTicks(5443),
                             Description = "Son haftanın staj defterinde eksikler var.",
                             IsActive = true,
                             IsDeleted = false,
@@ -353,7 +356,7 @@ namespace ToDoListMVC.Data.Migrations
                         new
                         {
                             Id = 3,
-                            CreatedDate = new DateTime(2024, 6, 2, 14, 24, 58, 115, DateTimeKind.Local).AddTicks(4136),
+                            CreatedDate = new DateTime(2024, 6, 3, 10, 44, 7, 631, DateTimeKind.Local).AddTicks(5445),
                             Description = "OBS'den bir mesaj gelebilir.",
                             IsActive = true,
                             IsDeleted = false,
@@ -362,16 +365,16 @@ namespace ToDoListMVC.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<int>", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
                 {
                     b.HasOne("ToDoListMVC.Entity.Entities.AppUser", null)
                         .WithMany()
@@ -380,7 +383,7 @@ namespace ToDoListMVC.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
                 {
                     b.HasOne("ToDoListMVC.Entity.Entities.AppUser", null)
                         .WithMany()
@@ -389,9 +392,9 @@ namespace ToDoListMVC.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<int>", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -404,7 +407,7 @@ namespace ToDoListMVC.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
                 {
                     b.HasOne("ToDoListMVC.Entity.Entities.AppUser", null)
                         .WithMany()

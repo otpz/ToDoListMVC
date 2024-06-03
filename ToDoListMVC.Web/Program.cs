@@ -13,13 +13,13 @@ builder.Services.LoadServiceLayerExtension();
 builder.Services.AddSession();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddIdentity<AppUser, IdentityRole>(opt =>
+
+builder.Services.AddIdentity<AppUser, IdentityRole<int>>(opt =>
 {
     opt.Password.RequireUppercase = false;
     opt.Password.RequireNonAlphanumeric = false;
     opt.Password.RequireLowercase = false;
 })
-    .AddRoleManager<RoleManager<IdentityRole>>()
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
 

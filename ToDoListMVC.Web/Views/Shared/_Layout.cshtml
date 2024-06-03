@@ -197,20 +197,16 @@
     </style>
 </head>
 <body>
-    <header class="box-shadow border-bottom border-light mb-1">
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm d-flex flex-wrap align-items-center justify-content-center">
-            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-                <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-decoration-none">
-                    <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
-                </a>
+    <header class="border-bottom mb-1" style=" background-color:#f5f5f5">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm d-flex flex-wrap align-items-center">
+            <div class="w-100 d-flex flex-wrap align-items-center justify-content-between">
 
-                <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0 ml-3">
                     <li><a asp-controller="Home" asp-action="Index" class="nav-link px-2">Anasayfa</a></li>
                     <li><a asp-controller="Home" asp-action="Index" class="nav-link px-2">Listelerim</a></li>
                 </ul>
 
-                <div class="text-end">
-                    
+                <div class="text-end mr-3">
                     <a type="button" asp-controller="Auth" asp-action="Login" class="btn btn-outline-dark me-2">Login</a>
                     <a type="button" asp-controller="Auth" asp-action="Register" class="btn btn-warning">Sign-up</a>
                 </div>

@@ -6,7 +6,7 @@ using ToDoListMVC.Entity.Entities;
 
 namespace ToDoListMVC.Data.Context
 {
-    public class AppDbContext : IdentityDbContext<AppUser, IdentityRole, string>
+    public class AppDbContext : IdentityDbContext<AppUser, IdentityRole<int>, int>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base (options)
         {
