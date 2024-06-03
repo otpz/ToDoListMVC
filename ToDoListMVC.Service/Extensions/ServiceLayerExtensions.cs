@@ -12,6 +12,7 @@ namespace ToDoListMVC.Service.Extensions
             var assembly = Assembly.GetExecutingAssembly();
             services.AddScoped<ITaskJobService, TaskJobService>();
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IUserService, UserService>();
             services.AddAutoMapper(assembly);
 
             return services;

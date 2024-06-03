@@ -206,10 +206,15 @@
                     <li><a asp-controller="Home" asp-action="Index" class="nav-link px-2">Listelerim</a></li>
                 </ul>
 
-                <div class="text-end mr-3">
-                    <a type="button" asp-controller="Auth" asp-action="Login" class="btn btn-outline-dark me-2">Login</a>
-                    <a type="button" asp-controller="Auth" asp-action="Register" class="btn btn-warning">Sign-up</a>
-                </div>
+                @if(!User.Identity.IsAuthenticated){
+                    <div class="text-end mr-3">
+                        <a type="button" asp-controller="Auth" asp-action="Login" class="btn btn-outline-dark me-2">Login</a>
+                        <a type="button" asp-controller="Auth" asp-action="Register" class="btn btn-warning">Sign-up</a>
+                    </div>
+                } else
+                {
+                    @await Component.InvokeAsync("UserHeader");
+                }
             </div>
         </nav>
     </header>

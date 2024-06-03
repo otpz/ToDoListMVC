@@ -2,7 +2,7 @@
 using ToDoListMVC.Entity.Entities;
 using ToDoListMVC.Entity.ViewModels.TaskJobs;
 
-namespace ToDoListMVC.Service.Mappings
+namespace ToDoListMVC.Service.AutoMapper.TaskJobs
 {
     public class TaskJobMap : Profile
     {
