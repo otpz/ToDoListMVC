@@ -38,7 +38,8 @@ namespace ToDoListMVC.Service.Services.Concretes
             {
                 return null;
             }
-            var user = await unitOfWork.GetRepository<AppUser>().GetAsync(x => x.Id == userById.Id, t => t.TaskJobs);
+
+            var user = await unitOfWork.GetRepository<AppUser>().GetAsync(x => x.Id == userById.Id, t => t.TaskJobs.OrderBy(x=>x.Priority).Where(x=> x.IsActive && !x.IsDeleted));
             return user;
         }
     }

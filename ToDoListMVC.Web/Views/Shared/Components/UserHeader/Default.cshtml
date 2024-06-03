@@ -5,8 +5,7 @@
         @Model.FirstName @Model.LastName
     </div>
     <div class="dropdown-menu mr-5">
-        <a class="dropdown-item" asp-controller="User" asp-action="Profile" asp-route-userId="@Model.Id">Profil</a>
-        <a class="dropdown-item" asp-controller="User" asp-action="Settings" asp-route-userId="@Model.Id">Ayarlar</a>
-        <a class="dropdown-item" asp-controller="Auth" asp-action="Logout">Çıkış Yap</a>
+        <a class="dropdown-item" asp-controller="user" asp-action="index" asp-route-userId="@Model.Id">Profil</a>
+        <a class="dropdown-item" asp-controller="auth" asp-action="logout">Çıkış Yap</a>
     </div>
 </div>
