@@ -10,21 +10,15 @@ namespace ToDoListMVC.Web.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly ITaskJobService taskJobService;
-        private readonly IMapper mapper;
 
-        public HomeController(ILogger<HomeController> logger, ITaskJobService taskJobService, IMapper mapper)
+        public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
-            this.taskJobService = taskJobService;
-            this.mapper = mapper;
         }
 
         public async Task<IActionResult> Index()
         {
-            var taskJobs = await taskJobService.GetAllTaskJobAsync();
-            var taskJobsMap = mapper.Map<List<TaskJobViewModel>>(taskJobs);
-            return View(taskJobsMap);
+            return View();
         }
 
         public IActionResult Privacy()
