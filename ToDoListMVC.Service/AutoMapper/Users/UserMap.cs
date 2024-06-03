@@ -11,6 +11,7 @@ namespace ToDoListMVC.Service.AutoMapper.Users
             CreateMap<AppUser, UserLoginViewModel>().ReverseMap();
             CreateMap<AppUser, UserRegisterViewModel>().ReverseMap();
             CreateMap<UserHeaderViewModel, AppUser>().ReverseMap();
+            CreateMap<AppUser, UserProfileViewModel>().ReverseMap();
         }
     }
 }

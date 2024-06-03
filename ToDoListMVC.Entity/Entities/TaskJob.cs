@@ -6,8 +6,8 @@ namespace ToDoListMVC.Entity.Entities
         public string Title { get; set; }
         public string Description { get; set; }
         public int Priority { get; set; }
-        public bool IsActive { get; set; }
-        //public int UserId { get; set; }
-        //public AppUser User { get; set; }
+        public bool IsActive { get; set; } = true;
+        public int UserId { get; set; }
+        public AppUser User { get; set; }
     }
 }

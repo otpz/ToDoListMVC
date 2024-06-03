@@ -23,7 +23,22 @@ namespace ToDoListMVC.Service.Services.Concretes
         public async Task<AppUser> GetLoggedInUserAsync()
         {
             var userId = _user.GetLoggedInUserId();
+            if (userId == null)
+            {
+                return null;
+            }
             var user = await unitOfWork.GetRepository<AppUser>().GetByIdAsync(userId);
+            return user;
+        }
+
+        public async Task<AppUser> GetUserProfileByIdAsync(int id)
+        {
+            var userById = await unitOfWork.GetRepository<AppUser>().GetByIdAsync(id);
+            if (userById == null)
+            {
+                return null;
+            }
+            var user = await unitOfWork.GetRepository<AppUser>().GetAsync(x => x.Id == userById.Id, t => t.TaskJobs);
             return user;
         }
     }

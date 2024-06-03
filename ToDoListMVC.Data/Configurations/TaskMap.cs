@@ -22,6 +22,7 @@ namespace ToDoListMVC.Data.Configurations
                 DeletedDate = null,
                 IsActive = true,
                 Priority = 1,
+                UserId = 1,
                 IsDeleted = false,
             },
             new TaskJob
@@ -33,6 +34,7 @@ namespace ToDoListMVC.Data.Configurations
                 DeletedDate = null,
                 IsActive = true,
                 Priority = 2,
+                UserId = 1,
                 IsDeleted = false,
             },
             new TaskJob
@@ -44,6 +46,7 @@ namespace ToDoListMVC.Data.Configurations
                 DeletedDate = null,
                 IsActive = true,
                 Priority = 3,
+                UserId = 1,
                 IsDeleted = false,
             });
         }

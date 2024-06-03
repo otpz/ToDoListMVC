@@ -9,6 +9,7 @@ namespace ToDoListMVC.Service.AutoMapper.TaskJobs
         public TaskJobMap()
         {
             CreateMap<TaskJob, TaskJobViewModel>().ReverseMap();
+            CreateMap<TaskJob, TaskJobAddViewModel>().ReverseMap();
         }
     }
 }
