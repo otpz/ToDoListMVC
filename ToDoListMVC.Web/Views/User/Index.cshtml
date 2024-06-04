@@ -64,12 +64,14 @@
                                                 </div>
 
                                                 <div class="widget-content-right">
-                                                    <button class="border-0 btn-transition btn btn-outline-success">
-                                                        <i class="fa fa-check" aria-hidden="true"></i>
-                                                    </button>
-                                                    <button class="border-0 btn-transition btn btn-outline-danger">
-                                                        <i class="fa fa-trash"></i>
-                                                    </button>
+                                                    @if(ViewBag.IsOwnProfile){
+                                                        <a asp-controller="user" asp-action="update" asp-route-taskJobId="@task.Id" class="border-0 btn-transition btn btn-outline-success">
+                                                            <i class="fa fa-check" aria-hidden="true"></i>
+                                                        </a>
+                                                        <a asp-controller="user" asp-action="delete" asp-route-taskJobId="@task.Id" class="border-0 btn-transition btn btn-outline-danger">
+                                                            <i class="fa fa-trash"></i>
+                                                        </a>
+                                                    }
                                                 </div>
                                             </div>
                                         </div>

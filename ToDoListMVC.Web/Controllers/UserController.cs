@@ -61,5 +61,39 @@ namespace ToDoListMVC.Web.Controllers
             return RedirectToAction("index", "user", new {userId = _user.GetLoggedInUserId()});
         }
 
+        [HttpGet]
+        public async Task<ActionResult> Update(int taskJobId)
+        {
+            if (taskJobId == 0)
+            {
+                return RedirectToAction("index", "user", new { userId = _user.GetLoggedInUserId() });
+            }
+            string title = await taskJobService.DisableTaskJob(taskJobId);
+
+            if (title != null)
+                ViewBag.IsOwnProfile = true;
+            else
+                ViewBag.IsOwnProfile = false;
+
+            return RedirectToAction("index", "user", new {userId = _user.GetLoggedInUserId() });
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> Delete(int taskJobId)
+        {
+            if (taskJobId == 0)
+            {
+                return RedirectToAction("index", "user", new { userId = _user.GetLoggedInUserId() });
+            }
+            string title = await taskJobService.SafeDeleteTaskJob(taskJobId);
+
+            if (title != null)
+                ViewBag.IsOwnProfile = true;
+            else
+                ViewBag.IsOwnProfile = false;
+
+            return RedirectToAction("index", "user", new { userId = _user.GetLoggedInUserId() });
+        }
+
     }
 }

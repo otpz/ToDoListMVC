@@ -47,5 +47,33 @@ namespace ToDoListMVC.Service.Services.Concretes
             return taskJob.Title;
         }
 
+        public async Task<string> DisableTaskJob(int taskJobId)
+        {
+            var taskJob = await unitOfWork.GetRepository<TaskJob>().GetByIdAsync(taskJobId);
+            var loggedInUserId = _user.GetLoggedInUserId();
+            if (taskJob.UserId == loggedInUserId)
+            {
+                taskJob.IsActive = false;
+                await unitOfWork.GetRepository<TaskJob>().UpdateAsync(taskJob);
+                await unitOfWork.SaveAsync();
+                return taskJob.Title;
+            }
+            return null;
+        }
+
+        public async Task<string> SafeDeleteTaskJob(int taskJobId)
+        {
+            var taskJob = await unitOfWork.GetRepository<TaskJob>().GetByIdAsync(taskJobId);
+            var loggedInUserId = _user.GetLoggedInUserId();
+            if (taskJob.UserId == loggedInUserId)
+            {
+                taskJob.IsDeleted = true;
+                taskJob.DeletedDate = DateTime.Now;
+                await unitOfWork.GetRepository<TaskJob>().UpdateAsync(taskJob);
+                await unitOfWork.SaveAsync();
+                return taskJob.Title;
+            }
+            return null;
+        }
     }
 }

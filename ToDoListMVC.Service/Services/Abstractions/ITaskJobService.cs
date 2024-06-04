@@ -7,5 +7,7 @@ namespace ToDoListMVC.Service.Services.Abstractions
     {
         Task<List<TaskJob>> GetAllTaskJobAsync();
         Task<string> CreateTaskJobAsync(TaskJobAddViewModel taskJobAddViewModel);
+        Task<string> DisableTaskJob(int taskJobId);
+        Task<string> SafeDeleteTaskJob(int taskJobId);
     }
 }
