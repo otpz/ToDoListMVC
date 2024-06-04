@@ -4,16 +4,17 @@
     <div class="row justify-content-md-center">
         <div class="col-12 col-md-11 col-lg-8 col-xl-7 col-xxl-6">
             <div class="bg-white p-4 p-md-5 rounded shadow-sm w-100 position-relative">
-                <a asp-controller="Home" asp-action="Index" class="text-decoration-none">Anasayfaya Dön</a>
+                <a asp-controller="user" asp-action="index" asp-route-userId="@Model.Id" class="text-decoration-none">Anasayfaya Dön</a>
                 <div class="row">
                     <div class="col-12">
                         <div class="mb-5">
-                            <h3>Kaydol</h3>
+                            <h3>Profil Bilgileri</h3>
                         </div>
                     </div>
                 </div>
-                <form asp-controller="Auth" asp-action="Register" method="post" enctype="multipart/form-data">
+                <form asp-controller="user" asp-action="profile" asp-route-userId="@Model.Id" method="post" enctype="multipart/form-data">
                     <div asp-validation-summary="All"></div>
+                    <input asp-for="Id" type="hidden" name="Id">
                     <div class="row gy-3 gy-md-4 overflow-hidden">
                         <div class="form-row">
                             <div class="col">
@@ -29,18 +30,16 @@
                         </div>
                         <div class="col-12">
                             <label asp-for="Email" class="form-label">Email <span class="text-danger">*</span></label>
-                            <input asp-for="Email" type="email" class="form-control" name="Email" id="Email" placeholder="name@example.com" required>
+                            <input asp-for="Email" type="email" class="form-control" name="Email" id="Email" placeholder="name@example.com" readonly required>
                             <span class="text-danger" asp-validation-for="Email"></span>
                         </div>
 
                         <div class="col-12">
-                            <label asp-for="Password" class="form-label">Şifre <span class="text-danger">*</span></label>
-                            <input asp-for="Password" type="password" class="form-control" name="Password" id="Password" value="" required>
-                            <span class="text-danger" asp-validation-for="Password"></span>
+                            <label asp-for="Biography" class="form-label">Biyografi <span class="text-danger">*</span></label>
+                            <textarea asp-for="Biography" type="password" class="form-control" name="Biography" id="Biography" value="" required></textarea>
+                            <span class="text-danger" asp-validation-for="Biography"></span>
                         </div>
-
-                       
-
+                           
                         <div class="col-12">
                             <div class="d-grid">
                                 <button class="btn btn-lg btn-primary" type="submit">Kaydol</button>
@@ -48,15 +47,25 @@
                         </div>
                     </div>
                 </form>
-                <div class="row">
-                    <div class="col-12">
-                        <hr class="mt-3 mb-3 border-secondary-subtle">
-                        <div class="d-flex gap-2 gap-md-4 flex-column flex-md-row justify-content-md-end">
-                            <a asp-controller="Auth" asp-action="Login" class="link-secondary text-decoration-none">Giriş Yap</a>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
 </div>
+
+
+<script>
+    function setUrlUserId(param, value) {
+        var currentUrl = window.location.href;
+        var url = new URL(currentUrl);
+        var params = new URLSearchParams(url.search);
+
+        params.set(param, value);
+        url.search = params.toString();
+
+        // URL'yi yeniden yönlendirmeden güncelleyin
+        history.replaceState(null, '', url.toString());
+    }
+
+    // Kullanımı
+    setUrlUserId("userId", @Model.Id);
+</script>

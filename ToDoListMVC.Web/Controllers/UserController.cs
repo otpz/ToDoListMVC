@@ -77,6 +77,34 @@ namespace ToDoListMVC.Web.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> Profile()
+        {
+            var user = await userService.GetUserInfoAsync();
+            var userSettingsMap = mapper.Map<UserSettingsViewModel>(user);
+            return View(userSettingsMap);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Profile(UserSettingsViewModel userSettingsViewModel)
+        {
+            int loggedInUserId = _user.GetLoggedInUserId();
+            if (loggedInUserId != userSettingsViewModel.Id)
+            {
+                toastNotification.AddErrorToastMessage("Bir hata meydana geldi", new ToastrOptions { Title = "Hata" });
+                return RedirectToAction("index", "user", new {userId = loggedInUserId});
+            }
+            string email = await userService.UpdateUserProfileAsync(userSettingsViewModel);
+
+            //if (email != null)
+            //{
+            //    return 
+            //}
+
+            toastNotification.AddSuccessToastMessage("Bilgiler başarıyla güncellendi.", new ToastrOptions { Title = "Başarılı" });
+            return RedirectToAction("index", "user", new { userId = loggedInUserId });
+        }
+
+        [HttpGet]
         public async Task<ActionResult> Update(int taskJobId)
         {
             if (taskJobId == 0)
