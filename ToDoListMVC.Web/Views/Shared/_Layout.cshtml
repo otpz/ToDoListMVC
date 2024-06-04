@@ -198,14 +198,10 @@
 <body>
     <header class="border-bottom mb-1" style=" background-color:#f5f5f5">
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm d-flex flex-wrap align-items-center">
-            <div class="w-100 d-flex flex-wrap align-items-center justify-content-between">
+            <div class="w-100 d-flex flex-wrap align-items-center justify-content-between ">
 
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0 ml-3">
-                    <li><a asp-controller="Home" asp-action="Index" class="nav-link px-2">Anasayfa</a></li>
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        @await Component.InvokeAsync("UserProfileTab")
-                    }
+                    <li><a asp-controller="Home" asp-action="Index" class="nav-link px-2 text-dark" style="font-size: 18px;">Anasayfa</a></li>
                 </ul>
 
                 @if(!User.Identity.IsAuthenticated){
@@ -215,7 +211,15 @@
                     </div>
                 } else
                 {
-                    @await Component.InvokeAsync("UserHeader")
+                    <div class="d-flex flex-wrap align-items-center justify-content-between">
+                        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0 ml-3">
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                @await Component.InvokeAsync("UserProfileTab")
+                            }
+                        </ul>
+                        @await Component.InvokeAsync("UserHeader")
+                    </div>
                 }
 
             </div>

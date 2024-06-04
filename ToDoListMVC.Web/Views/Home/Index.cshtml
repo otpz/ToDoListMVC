@@ -1,3 +1,21 @@
-﻿
+﻿@model UserHomeViewModel
 
-<h1>ANASAYFA</h1>
+<div class="container d-flex h-100 p-3 mx-auto flex-column text-center">
+    <main role="main" class="inner cover container">
+        <h1 class="cover-heading">Görev listelerinizi oluşturun.</h1>
+        <p class="lead">
+            Kolay kullanımı ile görev listelerinizi hızlı şekilde oluşturun, 
+            tamamlanan görevleri listenizden kaldırın veya silin.
+            Bu uygulama sayesinde listelerinizi pdf formatında indirip değerlendirin.
+        </p>
+        <p class="lead">
+            @if (Model.Id != 0)
+            {
+                <a asp-controller="User" asp-action="Index" asp-route-userId="@Model.Id" class="btn btn-lg btn-info text-white">Hemen Başlayın</a>
+            } else
+            {
+                <a asp-controller="Auth" asp-action="Login" class="btn btn-lg btn-info text-white">Hemen Başlayın</a>
+            }
+        </p>
+    </main>
+</div>
