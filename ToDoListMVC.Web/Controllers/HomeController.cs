@@ -23,7 +23,7 @@ namespace ToDoListMVC.Web.Controllers
             _user = httpContextAccessor.HttpContext.User;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             int loggedInUser = 0;
 

@@ -30,7 +30,7 @@ namespace ToDoListMVC.Service.Services.Concretes
         public async Task<AppUser> GetLoggedInUserAsync()
         {
             var userId = _user.GetLoggedInUserId();
-            if (userId == null)
+            if (userId == 0)
             {
                 return null;
             }

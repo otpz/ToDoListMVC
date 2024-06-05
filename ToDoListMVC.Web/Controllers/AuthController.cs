@@ -35,7 +35,6 @@ namespace ToDoListMVC.Web.Controllers
             return View();
         }
 
-
         [HttpPost]
         public async Task<IActionResult> Login(UserLoginViewModel userLoginViewModel)
         {

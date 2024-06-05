@@ -15,7 +15,7 @@ namespace ToDoListMVC.Web.ViewComponents
             this.httpContextAccessor = httpContextAccessor;
             _user = httpContextAccessor.HttpContext.User;
         }
-        public async Task<IViewComponentResult> InvokeAsync()
+        public IViewComponentResult InvokeAsync()
         {
             var userId = _user.GetLoggedInUserId();
             var model = new UserTabViewModel { Id = userId };
