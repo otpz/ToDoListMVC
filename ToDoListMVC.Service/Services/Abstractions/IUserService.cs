@@ -6,8 +6,11 @@ namespace ToDoListMVC.Service.Services.Abstractions
     public interface IUserService
     {
         Task<AppUser> GetLoggedInUserAsync();
-        Task<AppUser> GetUserProfileByIdAsync(int id);
+        Task<AppUser> GetUserProfileWithTaskByIdAsync(int id);
+
+        Task<AppUser> GetUserProfileWithDisabledTaskByIdAsync(int id);
         Task<AppUser> GetUserInfoAsync();
         Task<string> UpdateUserProfileAsync(UserSettingsViewModel userSettingsViewModel);
+
     }
 }

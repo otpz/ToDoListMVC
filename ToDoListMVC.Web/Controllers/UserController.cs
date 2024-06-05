@@ -6,6 +6,7 @@ using System.Security.Claims;
 using ToDoListMVC.Entity.ViewModels.TaskJobs;
 using ToDoListMVC.Entity.ViewModels.Users;
 using ToDoListMVC.Service.Extensions;
+using ToDoListMVC.Service.Helpers.PdfGenerator;
 using ToDoListMVC.Service.Services.Abstractions;
 
 namespace ToDoListMVC.Web.Controllers
@@ -18,15 +19,17 @@ namespace ToDoListMVC.Web.Controllers
         private readonly IMapper mapper;
         private readonly IHttpContextAccessor httpContextAccessor;
         private readonly IToastNotification toastNotification;
+        private readonly IPdfGenerator pdfGenerator;
         private readonly ClaimsPrincipal _user;
 
-        public UserController(IUserService userService, ITaskJobService taskJobService, IMapper mapper, IHttpContextAccessor httpContextAccessor, IToastNotification toastNotification)
+        public UserController(IUserService userService, ITaskJobService taskJobService, IMapper mapper, IHttpContextAccessor httpContextAccessor, IToastNotification toastNotification, IPdfGenerator pdfGenerator)
         {
             this.userService = userService;
             this.taskJobService = taskJobService;
             this.mapper = mapper;
             this.httpContextAccessor = httpContextAccessor;
             this.toastNotification = toastNotification;
+            this.pdfGenerator = pdfGenerator;
             _user = httpContextAccessor.HttpContext.User;
         }
 
@@ -40,7 +43,7 @@ namespace ToDoListMVC.Web.Controllers
                 return RedirectToAction("Login", "Auth");
             }
 
-            var user = await userService.GetUserProfileByIdAsync(userId);
+            var user = await userService.GetUserProfileWithTaskByIdAsync(userId);
 
             if (user == null)
             {
@@ -95,12 +98,16 @@ namespace ToDoListMVC.Web.Controllers
             }
             string email = await userService.UpdateUserProfileAsync(userSettingsViewModel);
 
-            //if (email != null)
-            //{
-            //    return 
-            //}
-
             toastNotification.AddSuccessToastMessage("Bilgiler başarıyla güncellendi.", new ToastrOptions { Title = "Başarılı" });
+            return RedirectToAction("index", "user", new { userId = loggedInUserId });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GeneratePdf()
+        {
+            int loggedInUserId = _user.GetLoggedInUserId();
+            await pdfGenerator.GenerateUserDataPdfById(loggedInUserId);
+            toastNotification.AddSuccessToastMessage("Pdf Oluşturuldu.", new ToastrOptions { Title = "Başarılı" });
             return RedirectToAction("index", "user", new { userId = loggedInUserId });
         }
 

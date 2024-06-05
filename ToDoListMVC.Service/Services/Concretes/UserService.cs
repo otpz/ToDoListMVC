@@ -45,7 +45,19 @@ namespace ToDoListMVC.Service.Services.Concretes
             return user;
         }
 
-        public async Task<AppUser> GetUserProfileByIdAsync(int id)
+        public async Task<AppUser> GetUserProfileWithDisabledTaskByIdAsync(int id)
+        {
+            var userById = await unitOfWork.GetRepository<AppUser>().GetByIdAsync(id);
+            if (userById == null)
+            {
+                return null;
+            }
+
+            var user = await unitOfWork.GetRepository<AppUser>().GetAsync(x => x.Id == userById.Id, t => t.TaskJobs.OrderBy(x => x.Priority).Where(x => !x.IsActive && !x.IsDeleted));
+            return user;
+        }
+
+        public async Task<AppUser> GetUserProfileWithTaskByIdAsync(int id)
         {
             var userById = await unitOfWork.GetRepository<AppUser>().GetByIdAsync(id);
             if (userById == null)
@@ -58,6 +70,11 @@ namespace ToDoListMVC.Service.Services.Concretes
         }
         public async Task<string> UpdateUserProfileAsync(UserSettingsViewModel userSettingsViewModel)
         {
+            if (userSettingsViewModel.Id != _user.GetLoggedInUserId())
+            {
+                return null;
+            }
+
             var user = await unitOfWork.GetRepository<AppUser>().GetByIdAsync(userSettingsViewModel.Id);
 
             user.FirstName = userSettingsViewModel.FirstName;
