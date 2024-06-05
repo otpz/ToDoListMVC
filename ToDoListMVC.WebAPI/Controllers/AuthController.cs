@@ -40,7 +40,7 @@ namespace ToDoListMVC.WebAPI.Controllers
             } 
             else if (result == "ok")
             {
-                return Ok();
+                return Ok(result);
             } 
             else
             {
@@ -48,6 +48,19 @@ namespace ToDoListMVC.WebAPI.Controllers
             }
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Register(UserRegisterViewModel userRegisterViewModel)
+        {
+            string result = await authService.RegisterUserAsync(userRegisterViewModel);
+            if (result == "ok")
+            {
+                return Ok(result);
+            }else
+            {
+                //ModelState.AddModelError("", "Bilgileri doğru giriniz");
+                return BadRequest(result);
+            }
+        }
 
         [Authorize]
         [HttpGet]
