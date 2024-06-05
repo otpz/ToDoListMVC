@@ -106,8 +106,13 @@ namespace ToDoListMVC.Web.Controllers
         public async Task<IActionResult> GeneratePdf()
         {
             int loggedInUserId = _user.GetLoggedInUserId();
-            await pdfGenerator.GenerateUserDataPdfById(loggedInUserId);
-            toastNotification.AddSuccessToastMessage("Pdf Oluşturuldu.", new ToastrOptions { Title = "Başarılı" });
+            string result = await pdfGenerator.GenerateUserDataPdfById(loggedInUserId);
+            if (result == null)
+            {
+                toastNotification.AddErrorToastMessage("Hata meydana geldi.", new ToastrOptions { Title = "Hata" });
+                return RedirectToAction("index", "user", new { userId = loggedInUserId });
+            }
+            toastNotification.AddSuccessToastMessage("Pdf masaüstüne oluşturuldu.", new ToastrOptions { Title = "Başarılı" });
             return RedirectToAction("index", "user", new { userId = loggedInUserId });
         }
 

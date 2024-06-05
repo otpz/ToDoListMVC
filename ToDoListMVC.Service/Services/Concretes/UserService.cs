@@ -45,6 +45,17 @@ namespace ToDoListMVC.Service.Services.Concretes
             return user;
         }
 
+        public async Task<AppUser> GetUserProfileWithAllTaskByIdAsync(int id)
+        {
+            var userById = await unitOfWork.GetRepository<AppUser>().GetByIdAsync(id);
+            if (userById == null)
+            {
+                return null;
+            }
+            var user = await unitOfWork.GetRepository<AppUser>().GetAsync(x => x.Id == userById.Id, t => t.TaskJobs.OrderBy(x => x.Priority).Where(x => !x.IsDeleted));
+            return user;
+        }
+
         public async Task<AppUser> GetUserProfileWithDisabledTaskByIdAsync(int id)
         {
             var userById = await unitOfWork.GetRepository<AppUser>().GetByIdAsync(id);

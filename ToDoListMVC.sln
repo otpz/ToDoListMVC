@@ -3,15 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34902.65
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoListMVC.Web", "ToDoListMVC.Web\ToDoListMVC.Web.csproj", "{545F86C0-9CCF-4FDC-8EEB-E7AFE4636BCE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToDoListMVC.Web", "ToDoListMVC.Web\ToDoListMVC.Web.csproj", "{545F86C0-9CCF-4FDC-8EEB-E7AFE4636BCE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoListMVC.Core", "ToDoListMVC.Core\ToDoListMVC.Core.csproj", "{A18983DD-D572-4BB5-B072-2C3991466C4B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToDoListMVC.Core", "ToDoListMVC.Core\ToDoListMVC.Core.csproj", "{A18983DD-D572-4BB5-B072-2C3991466C4B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoListMVC.Data", "ToDoListMVC.Data\ToDoListMVC.Data.csproj", "{1B62C647-9EE9-4FC6-B025-0FA5C717DF04}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToDoListMVC.Data", "ToDoListMVC.Data\ToDoListMVC.Data.csproj", "{1B62C647-9EE9-4FC6-B025-0FA5C717DF04}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoListMVC.Entity", "ToDoListMVC.Entity\ToDoListMVC.Entity.csproj", "{2338A03B-012F-48E0-89F3-79472511A727}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToDoListMVC.Entity", "ToDoListMVC.Entity\ToDoListMVC.Entity.csproj", "{2338A03B-012F-48E0-89F3-79472511A727}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoListMVC.Service", "ToDoListMVC.Service\ToDoListMVC.Service.csproj", "{33F20490-14CF-473B-99FD-B601BBE3F6FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToDoListMVC.Service", "ToDoListMVC.Service\ToDoListMVC.Service.csproj", "{33F20490-14CF-473B-99FD-B601BBE3F6FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoListMVC.WebAPI", "ToDoListMVC.WebAPI\ToDoListMVC.WebAPI.csproj", "{74A41B8C-E9A3-4DF5-95A0-717541E3C5BE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{33F20490-14CF-473B-99FD-B601BBE3F6FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{33F20490-14CF-473B-99FD-B601BBE3F6FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{33F20490-14CF-473B-99FD-B601BBE3F6FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74A41B8C-E9A3-4DF5-95A0-717541E3C5BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74A41B8C-E9A3-4DF5-95A0-717541E3C5BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74A41B8C-E9A3-4DF5-95A0-717541E3C5BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74A41B8C-E9A3-4DF5-95A0-717541E3C5BE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

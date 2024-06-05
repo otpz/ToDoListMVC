@@ -134,9 +134,9 @@ namespace ToDoListMVC.Service.Helpers.PdfGenerator
 
             // Save the document
             string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop); // desktop path
-            pdfDoc.Save(path+"\\"+"Tasks.pdf");
+            pdfDoc.Save(path+"\\"+$"Tasks_{user.FirstName}_{user.LastName}.pdf");
 
-            return "Başarılı";
+            return "Success";
         }
 
         private string PriorityDetector(int priority) 
@@ -144,10 +144,12 @@ namespace ToDoListMVC.Service.Helpers.PdfGenerator
             if (priority == 1) 
             {
                 return "Yüksek Öncelikli";
-            } else if (priority == 2)
+            } 
+            else if (priority == 2)
             {
                 return "Orta Öncelikli";
-            } else
+            } 
+            else
             {
                 return "Düşük Öncelikli";
             }
