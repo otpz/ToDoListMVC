@@ -30,13 +30,13 @@ namespace ToDoListMVC.Service.Helpers.PdfGenerator
 
             var user = await userService.GetUserProfileWithTaskByIdAsync(userId);
             
-
             PdfDocument pdfDoc = new PdfDocument();
             PdfPage page = pdfDoc.AddPage();
 
             XGraphics gfx = XGraphics.FromPdfPage(page);
 
             XFont titleFont = new XFont("Verdana", 14, XFontStyle.Bold);
+            XFont footerFont = new XFont("Verdana", 10, XFontStyle.Regular);
             XFont dateFont = new XFont("Verdana", 10, XFontStyle.Regular);
             XFont tableFont = new XFont("Verdana", 10, XFontStyle.Regular);
 
@@ -44,7 +44,6 @@ namespace ToDoListMVC.Service.Helpers.PdfGenerator
 
             XPoint activeTasksDotPosition = new XPoint(200, 64);
             
-
             // Header
             gfx.DrawString("Developed By Osman Topuz.", dateFont, XBrushes.Black,
                 new XRect(10, 30, page.Width, page.Height),
@@ -87,7 +86,7 @@ namespace ToDoListMVC.Service.Helpers.PdfGenerator
                 gfx.DrawString(taskJob.Title, tableFont, XBrushes.Black, new XRect(20, startY, columnWidths[0], rowHeight), XStringFormats.Center);
                 gfx.DrawString(taskJob.Description, tableFont, XBrushes.Black, new XRect(20 + columnWidths[0], startY, columnWidths[1], rowHeight), XStringFormats.Center);
                 gfx.DrawString(PriorityDetector(taskJob.Priority), tableFont, XBrushes.Black, new XRect(20 + columnWidths[0] + columnWidths[1], startY, columnWidths[2], rowHeight), XStringFormats.Center);
-                gfx.DrawString(taskJob.CreatedDate.ToString("dd/MM/yyyy"), tableFont, XBrushes.Black, new XRect(20 + columnWidths[0] + columnWidths[1] + columnWidths[2], startY, columnWidths[3], rowHeight), XStringFormats.Center);
+                gfx.DrawString(taskJob.CreatedDate.ToString("dd/MM/yyyy HH:mm:ss"), tableFont, XBrushes.Black, new XRect(20 + columnWidths[0] + columnWidths[1] + columnWidths[2], startY, columnWidths[3], rowHeight), XStringFormats.Center);
             }
 
             var userDisabledTask = await userService.GetUserProfileWithDisabledTaskByIdAsync(userId);
@@ -96,7 +95,6 @@ namespace ToDoListMVC.Service.Helpers.PdfGenerator
             // If there are completed tasks, add a new section for them
             if (userDisabledTask.TaskJobs.Count > 0)
             {
-
                 startY += rowHeight + 40; // Adding extra space between tables
                 XPoint completedTasksDotPosition = new XPoint(165, startY+5);
                 gfx.DrawEllipse(XBrushes.Red, new XRect(completedTasksDotPosition.X, completedTasksDotPosition.Y, 10, 10));
@@ -126,12 +124,17 @@ namespace ToDoListMVC.Service.Helpers.PdfGenerator
                     gfx.DrawString(taskjob.Title, tableFont, XBrushes.Black, new XRect(20, startY, columnWidths[0], rowHeight), XStringFormats.Center);
                     gfx.DrawString(taskjob.Description, tableFont, XBrushes.Black, new XRect(20 + columnWidths[0], startY, columnWidths[1], rowHeight), XStringFormats.Center);
                     gfx.DrawString(PriorityDetector(taskjob.Priority), tableFont, XBrushes.Black, new XRect(20 + columnWidths[0] + columnWidths[1], startY, columnWidths[2], rowHeight), XStringFormats.Center);
-                    gfx.DrawString(taskjob.CreatedDate.ToString("dd/MM/yyyy"), tableFont, XBrushes.Black, new XRect(20 + columnWidths[0] + columnWidths[1] + columnWidths[2], startY, columnWidths[3], rowHeight), XStringFormats.Center);
+                    gfx.DrawString(taskjob.CreatedDate.ToString("dd/MM/yyyy HH:mm:ss"), tableFont, XBrushes.Black, new XRect(20 + columnWidths[0] + columnWidths[1] + columnWidths[2], startY, columnWidths[3], rowHeight), XStringFormats.Center);
                 }
             }
 
+            gfx.DrawString("www.github.com/otpz", footerFont, XBrushes.Black,
+                new XRect(0, startY+100, page.Width, page.Height),
+                new XStringFormat { Alignment = XStringAlignment.Center });
+
             // Save the document
-            pdfDoc.Save("C:\\Users\\Osman\\Desktop\\Görevlerim2.pdf");
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop); // desktop path
+            pdfDoc.Save(path+"\\"+"Tasks.pdf");
 
             return "Başarılı";
         }
