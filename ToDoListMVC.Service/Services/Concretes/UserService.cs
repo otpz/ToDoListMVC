@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using ToDoListMVC.Data.UnitOfWorks;
 using ToDoListMVC.Entity.Entities;
+using ToDoListMVC.Entity.ViewModels.TaskJobs;
 using ToDoListMVC.Entity.ViewModels.Users;
 using ToDoListMVC.Service.Extensions;
 using ToDoListMVC.Service.Services.Abstractions;
@@ -77,6 +78,7 @@ namespace ToDoListMVC.Service.Services.Concretes
             }
 
             var user = await unitOfWork.GetRepository<AppUser>().GetAsync(x => x.Id == userById.Id, t => t.TaskJobs.OrderBy(x=>x.Priority).Where(x=> x.IsActive && !x.IsDeleted));
+            var lists = user.TaskJobs.ToList();
             return user;
         }
         public async Task<string> UpdateUserProfileAsync(UserSettingsViewModel userSettingsViewModel)

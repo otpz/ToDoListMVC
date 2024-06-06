@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using System.Text.Json.Serialization;
 using ToDoListMVC.Data.Context;
 using ToDoListMVC.Data.Extensions;
 using ToDoListMVC.Entity.Entities;
@@ -8,6 +9,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
+    //.AddJsonOptions(options =>
+    //{
+    //    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+    //});
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.LoadDataLayerExtension(builder.Configuration);
@@ -38,6 +44,7 @@ builder.Services.ConfigureApplicationCookie(config =>
     config.ExpireTimeSpan = TimeSpan.FromDays(1);
     config.AccessDeniedPath = new PathString("/Auth/AccessDenied");
 });
+
 
 var app = builder.Build();
 

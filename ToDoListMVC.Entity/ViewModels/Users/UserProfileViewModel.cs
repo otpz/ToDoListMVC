@@ -1,4 +1,5 @@
 ﻿using ToDoListMVC.Entity.Entities;
+using ToDoListMVC.Entity.ViewModels.TaskJobs;
 
 namespace ToDoListMVC.Entity.ViewModels.Users
 {
@@ -8,6 +9,6 @@ namespace ToDoListMVC.Entity.ViewModels.Users
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
-        public IList<TaskJob> TaskJobs { get; set; }
+        public IList<TaskJobListViewModel> TaskJobs { get; set; }
     }
 }
