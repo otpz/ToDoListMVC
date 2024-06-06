@@ -4,6 +4,7 @@ using System.Security.Claims;
 using ToDoListMVC.Entity.ViewModels.TaskJobs;
 using ToDoListMVC.Entity.ViewModels.Users;
 using ToDoListMVC.Service.Extensions;
+using ToDoListMVC.Service.Helpers.PdfGenerator;
 using ToDoListMVC.Service.Services.Abstractions;
 using ToDoListMVC.Service.Services.Concretes;
 
@@ -17,14 +18,16 @@ namespace ToDoListMVC.WebAPI.Controllers
         private readonly IHttpContextAccessor httpContextAccessor;
         private readonly IMapper mapper;
         private readonly ITaskJobService taskJobService;
+        private readonly IPdfGenerator pdfGenerator;
         private readonly ClaimsPrincipal _user;
 
-        public UserController(IUserService userService, IHttpContextAccessor httpContextAccessor, IMapper mapper, ITaskJobService taskJobService)
+        public UserController(IUserService userService, IHttpContextAccessor httpContextAccessor, IMapper mapper, ITaskJobService taskJobService, IPdfGenerator pdfGenerator)
         {
             this.userService = userService;
             this.httpContextAccessor = httpContextAccessor;
             this.mapper = mapper;
             this.taskJobService = taskJobService;
+            this.pdfGenerator = pdfGenerator;
             _user = httpContextAccessor.HttpContext.User;
         }
 
@@ -65,5 +68,61 @@ namespace ToDoListMVC.WebAPI.Controllers
             return Ok(title);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Profile()
+        {
+            var user = await userService.GetUserInfoAsync();
+            var userSettingsMap = mapper.Map<UserSettingsViewModel>(user);
+            return Ok(userSettingsMap);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Profile(UserSettingsViewModel userSettingsViewModel)
+        {
+            int loggedInUserId = _user.GetLoggedInUserId();
+            if (loggedInUserId != userSettingsViewModel.Id)
+            {
+                return Ok(loggedInUserId);
+            }
+            string email = await userService.UpdateUserProfileAsync(userSettingsViewModel);
+
+            return Ok(loggedInUserId);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GeneratePdf()
+        {
+            int loggedInUserId = _user.GetLoggedInUserId();
+            string result = await pdfGenerator.GenerateUserDataPdfById(loggedInUserId);
+
+            //return Ok(new {result, loggedInUserId});
+            return Ok(new {loggedInUserId , result});
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> Update(int taskJobId)
+        {
+            int loggedInUserId = _user.GetLoggedInUserId();
+            if (taskJobId == 0)
+            {
+                return NotFound(loggedInUserId);
+            }
+            string title = await taskJobService.DisableTaskJob(taskJobId);
+            
+            return Ok(new {result = title, loggedInUserId });
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> Delete(int taskJobId)
+        {
+            int loggedInUserId = _user.GetLoggedInUserId();
+            if (taskJobId == 0)
+            {
+                return NotFound(loggedInUserId);
+            }
+            string title = await taskJobService.SafeDeleteTaskJob(taskJobId);
+
+            return Ok(new { result = title, loggedInUserId });
+        }
     }
 }
