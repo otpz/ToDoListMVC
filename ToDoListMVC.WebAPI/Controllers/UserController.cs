@@ -37,35 +37,41 @@ namespace ToDoListMVC.WebAPI.Controllers
             var loggedInUserId = _user.GetLoggedInUserId();
             if (loggedInUserId == 0)
             {
-                return Unauthorized("Please login");
+                return Unauthorized(new {unauthorizedResult = "Lütfen giriş yapınız."});
             }
 
             var user = await userService.GetUserProfileWithTaskByIdAsync(userId);
 
             if (user == null)
             {
-                return NotFound("User not found");
+                return NotFound(new {notFoundResult = "Kullanıcı bulunamadı."});
             }
 
             var userProfileMap = mapper.Map<UserProfileViewModel>(user);
-            var response = new
-            {
-                UserProfile = userProfileMap,
-                IsOwnProfile = loggedInUserId == user.Id
-            };
-            return Ok(response);
+            bool isOwnProfile = loggedInUserId == user.Id;
+
+            return Ok(new {successResult = "Success", userProfileMap, isOwnProfile = isOwnProfile});
         }
 
         [HttpPost]
         public async Task<IActionResult> Add(TaskJobAddViewModel taskJobAddViewModel)
         {
+            int loggedInUserId = _user.GetLoggedInUserId();
             if (!ModelState.IsValid)
             {
-                ModelState.AddModelError("", "Görev bilgilerini tamamlayınız.");
-                return BadRequest("Model state is not valid");
+                return BadRequest(new {validationErrorResult = "Validasyon hatası meydana geldi.", userId = loggedInUserId});
             }
             string title = await taskJobService.CreateTaskJobAsync(taskJobAddViewModel);
-            return Ok(title);
+
+            bool isOwnProfile = true;
+
+            if (title == null)
+            {
+                isOwnProfile = false;
+                return BadRequest(new { errorResult = "İşlem başarısız.", isOwnProfile = isOwnProfile, userId = loggedInUserId });
+            }
+
+            return Ok(new { successResult = "İşlem başarısız.", isOwnProfile = isOwnProfile, userId = loggedInUserId});
         }
 
         [HttpGet]
@@ -73,7 +79,7 @@ namespace ToDoListMVC.WebAPI.Controllers
         {
             var user = await userService.GetUserInfoAsync();
             var userSettingsMap = mapper.Map<UserSettingsViewModel>(user);
-            return Ok(userSettingsMap);
+            return Ok(new {successResult = "Başarılı", userSettingsMap});
         }
 
         [HttpPost]
@@ -82,11 +88,11 @@ namespace ToDoListMVC.WebAPI.Controllers
             int loggedInUserId = _user.GetLoggedInUserId();
             if (loggedInUserId != userSettingsViewModel.Id)
             {
-                return Ok(loggedInUserId);
+                return BadRequest(new {errorResult = "Bir hata oluştu", loggedInUserId});
             }
             string email = await userService.UpdateUserProfileAsync(userSettingsViewModel);
 
-            return Ok(loggedInUserId);
+            return Ok(new {successResult = "Başarılı", userId = loggedInUserId, userEmail = email});
         }
 
         [HttpGet]
@@ -94,9 +100,12 @@ namespace ToDoListMVC.WebAPI.Controllers
         {
             int loggedInUserId = _user.GetLoggedInUserId();
             string result = await pdfGenerator.GenerateUserDataPdfById(loggedInUserId);
+            if (result == null)
+            {
+                return BadRequest(new {errorResult= "Bir hata oluştu", userId = loggedInUserId});
+            }
 
-            //return Ok(new {result, loggedInUserId});
-            return Ok(new {loggedInUserId , result});
+            return Ok(new {successResult = "PDF masaüstünde başarıyla oluşturuldu.", loggedInUserId , result});
         }
 
         [HttpGet]
@@ -105,12 +114,20 @@ namespace ToDoListMVC.WebAPI.Controllers
             int loggedInUserId = _user.GetLoggedInUserId();
             if (taskJobId == 0)
             {
-                return NotFound(loggedInUserId);
+                return NotFound(new {notFoundResult = "Görev bulunamadı.", userId = loggedInUserId});
             }
             string title = await taskJobService.DisableTaskJob(taskJobId);
-            
-            return Ok(new {result = title, loggedInUserId });
+            bool isOwnProfile = true;
+
+            if (title == null)
+            {
+                isOwnProfile = false;
+                return BadRequest(new { errorResult = "İşlem başarısız.", isOwnProfile = isOwnProfile, userId = loggedInUserId});
+            }
+
+            return Ok(new {result = $"{title} adlı görev başarıyla güncellendi.", userId = loggedInUserId, isOwnProfile = isOwnProfile });
         }
+
 
         [HttpGet]
         public async Task<ActionResult> Delete(int taskJobId)
@@ -118,11 +135,20 @@ namespace ToDoListMVC.WebAPI.Controllers
             int loggedInUserId = _user.GetLoggedInUserId();
             if (taskJobId == 0)
             {
-                return NotFound(loggedInUserId);
+                return NotFound(new {notFoundError = "Görev bulunamadı", userId = loggedInUserId});
             }
+
             string title = await taskJobService.SafeDeleteTaskJob(taskJobId);
 
-            return Ok(new { result = title, loggedInUserId });
+            bool isOwnProfile = true;
+
+            if (title == null)
+            {
+                isOwnProfile = false;
+                return BadRequest(new { errorResult = "İşlem başarısız.", isOwnProfile = isOwnProfile, userId = loggedInUserId });
+            }
+
+            return Ok(new { result = $"{title} adlı görev başarıyla güncellendi.", userId = loggedInUserId , isOwnProfile = isOwnProfile });
         }
     }
 }
